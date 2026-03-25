@@ -10,9 +10,17 @@
     <ul>
         <% expenses.forEach(exp => { %>
            <li>
-    <strong><%= exp.title %></strong> - 
-    ₹<%= exp.amount %> - 
-    <%= exp.category %>
+
+          <strong><%= exp.title %></strong>
+
+         Total: ₹<%= exp.amount %>
+
+         Members: <%= exp.members %>
+
+         Each Pays: ₹<%= exp.split %>
+
+          Category: <%= exp.category %>
+
 
     <!-- DELETE -->
     <form action="/delete/<%= exp._id %>" method="POST" style="display:inline;">

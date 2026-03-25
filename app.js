@@ -18,10 +18,17 @@ app.get("/", (req, res) => {
 });
 
 app.get("/add-test", async (req, res) => {
+
+    const split = 100 / 5;
+
     const newExpense = new Expense({
+
         title: "Test Expense",
         amount: 100,
+        members: 5,
+        split,
         category: "Test"
+
     });
 
     await newExpense.save();
@@ -45,17 +52,26 @@ app.get("/edit/:id", async (req, res) => {
 });
 
 app.post("/add", async (req, res) => {
-    const { title, amount, category } = req.body;
+
+    const { title, amount, category, members } = req.body;
+
+    const split = amount / members;
 
     const newExpense = new Expense({
+
         title,
         amount,
+        members,
+        split,
         category
+
     });
+    console.log(split);
 
     await newExpense.save();
 
     res.redirect("/expenses");
+
 });
 
 app.post("/delete/:id", async (req, res) => {
@@ -67,16 +83,19 @@ app.post("/delete/:id", async (req, res) => {
 });
 
 app.post("/edit/:id", async (req, res) => {
-    const { title, amount, category } = req.body;
+    const { title, amount, members, category } = req.body;
 
     await Expense.findByIdAndUpdate(req.params.id, {
         title,
         amount,
+        members,
+        split,
         category
     });
 
     res.redirect("/expenses");
 });
+
 
 app.set("view engine", "ejs");
 
