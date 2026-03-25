@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1><%= trip.tripName %></h1>
+
+Members: <%= trip.members %>
+
+<h3>Total: ₹<%= trip.total %></h3>
+
+<h3>Each Pays: ₹<%= trip.split %></h3>
+
+<hr>
+
+<h2>Add Expense</h2>
+
+<form action="/trip/<%= trip._id %>/add-expense" method="POST">
+
+<input name="title" placeholder="Expense name" required>
+
+<input name="amount" type="number" placeholder="Amount" required>
+
+<button>Add</button>
+
+</form>
+
+<hr>
+
+<h2>Expenses</h2>
+
+<ul>
+
+<% trip.expenses.forEach(e => { %>
+
+<li>
+
+<%= e.title %> ₹<%= e.amount %>
+
+</li>
+
+<% }) %>
+
+</ul>
+</body>
+</html>
