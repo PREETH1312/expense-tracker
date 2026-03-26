@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <h1><%= trip.tripName %></h1>
+
+    <a href="/expenses">⬅ Back to Main Page</a>
 
 Members: <%= trip.members %>
 
@@ -17,6 +20,8 @@ Members: <%= trip.members %>
 <hr>
 
 <h2>Add Expense</h2>
+
+<link rel="stylesheet" href="/style.css">
 
 <form action="/trip/<%= trip._id %>/add-expense" method="POST">
 
@@ -34,11 +39,16 @@ Members: <%= trip.members %>
 
 <ul>
 
-<% trip.expenses.forEach(e => { %>
+<% trip.expenses.forEach((e,index) => { %>
 
 <li>
 
 <%= e.title %> ₹<%= e.amount %>
+
+<!-- EDIT expense -->
+<a href="/trip/<%= trip._id %>/edit-expense/<%= index %>">
+Edit
+</a>
 
 </li>
 

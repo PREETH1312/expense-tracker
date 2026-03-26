@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     
@@ -8,11 +9,25 @@
 
 <form action="/trip/new" method="POST">
 
-<input name="tripName" placeholder="Trip Name" required>
+<input
+type="text"
+name="tripName"
+placeholder="Trip Name"
+required
+>
 
-<input name="members" type="number" placeholder="Members" required>
+<br><br>
 
-<button>Create Trip</button>
+<input
+type="number"
+name="members"
+placeholder="Number of Members"
+required
+>
+
+<br><br>
+
+<button type="submit">Create Trip</button>
 
 </form>
 </body>

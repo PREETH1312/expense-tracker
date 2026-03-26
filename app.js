@@ -22,10 +22,14 @@ app.get("/", (req, res) => {
 });
 
 app.get("/expenses", async (req, res) => {
-    const expenses = await Expense.find();
-    res.render("expenses", { expenses });
-});
 
+    const expenses = await Expense.find();
+
+    const trips = await Trip.find();   // get all trips
+
+    res.render("expenses", { expenses, trips });
+
+});
 app.get("/add", (req, res) => {
     res.render("add");
 });
@@ -95,17 +99,24 @@ app.post("/trip/new", async (req, res) => {
     const newTrip = new Trip({
 
         tripName,
-        members,
-        expenses: []
+
+        members: Number(members),
+
+        expenses: [],
+
+        total: 0,
+
+        split: 0
 
     });
 
     await newTrip.save();
 
+    console.log("Trip saved:", newTrip); // debug
+
     res.redirect("/trip/" + newTrip._id);
 
 });
-
 // show trip
 app.get("/trip/:id", async (req, res) => {
 
@@ -140,6 +151,94 @@ app.post("/trip/:id/add-expense", async (req, res) => {
     await trip.save();
 
     res.redirect("/trip/" + req.params.id);
+
+});
+
+// edit trip basic details
+app.get("/trip/edit/:id", async (req, res) => {
+
+    const trip = await Trip.findById(req.params.id);
+
+    res.render("edit_trip", { trip });
+
+});
+
+
+app.post("/trip/edit/:id", async (req, res) => {
+
+    const { tripName, members } = req.body;
+
+    const trip = await Trip.findById(req.params.id);
+
+    trip.tripName = tripName;
+
+    trip.members = members;
+
+    // recalculate split
+    trip.split = trip.total / members;
+
+    await trip.save();
+
+    res.redirect("/trip/" + req.params.id);
+
+});
+
+
+// delete trip
+app.post("/trip/delete/:id", async (req, res) => {
+
+    await Trip.findByIdAndDelete(req.params.id);
+
+    res.redirect("/expenses");
+
+});
+// open edit expense page
+app.get("/trip/:tripId/edit-expense/:index", async (req, res) => {
+
+    const trip = await Trip.findById(req.params.tripId);
+
+    const expense = trip.expenses[req.params.index];
+
+    res.render("edit_trip_expense", {
+
+        tripId: req.params.tripId,
+
+        index: req.params.index,
+
+        expense
+
+    });
+
+});
+
+
+
+// update expense
+app.post("/trip/:tripId/edit-expense/:index", async (req, res) => {
+
+    const { title, amount } = req.body;
+
+    const trip = await Trip.findById(req.params.tripId);
+
+    trip.expenses[req.params.index].title = title;
+
+    trip.expenses[req.params.index].amount = amount;
+
+
+    // recalc total
+    trip.total = trip.expenses.reduce(
+
+        (sum, e) => sum + Number(e.amount),
+
+        0
+
+    );
+
+    trip.split = trip.total / trip.members;
+
+    await trip.save();
+
+    res.redirect("/trip/" + req.params.tripId);
 
 });
 

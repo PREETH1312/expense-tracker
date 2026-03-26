@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<link rel="stylesheet" href="/style.css">
+
+</head>
+
+<body>
+
+<h1>Edit Trip Expense</h1>
+
+<a href="/trip/<%= tripId %>">⬅ Back to Trip</a>
+
+<form action="/trip/<%= tripId %>/edit-expense/<%= index %>" method="POST">
+
+<input
+name="title"
+value="<%= expense.title %>"
+required
+>
+
+<br><br>
+
+<input
+type="number"
+name="amount"
+value="<%= expense.amount %>"
+required
+>
+
+<br><br>
+
+<button>Update</button>
+
+</form>
+
+</body>
+
+</html>

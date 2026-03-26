@@ -5,37 +5,79 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <h1>All Expenses</h1>
+<h1>All Expenses</h1>
 
-    <a href="/trip/new">Create Group Trip</a>
+<a href="/trip/new">Create Group Trip</a>
 
-    <ul>
-        <% expenses.forEach(exp => { %>
-           <li>
+<hr>
+<h2>Group Trips</h2>
 
-          <strong><%= exp.title %></strong>
+<ul>
 
-         Total: ₹<%= exp.amount %>
+<% trips.forEach(trip => { %>
 
-         Members: <%= exp.members %>
+<li>
 
-         Each Pays: ₹<%= exp.split %>
+<a href="/trip/<%= trip._id %>">
 
-          Category: <%= exp.category %>
+<strong><%= trip.tripName %></strong>
+
+</a>
+
+| Members: <%= trip.members %>
+
+| Total: ₹<%= trip.total %>
+
+| Each Pays: ₹<%= trip.split %>
 
 
-    <!-- DELETE -->
-    <form action="/delete/<%= exp._id %>" method="POST" style="display:inline;">
-        <button type="submit">Delete</button>
-    </form>
+<!-- DELETE TRIP -->
+<form action="/trip/delete/<%= trip._id %>" method="POST" style="display:inline;">
 
-    <!-- EDIT -->
-    <a href="/edit/<%= exp._id %>">Edit</a>
+<button>Delete</button>
+
+</form>
+
 </li>
-        <% }) %>
-    </ul>
 
-    <br>
-    <a href="/add">Add New Expense</a>
+<% }) %>
+
+</ul>
+
+<hr>
+
+
+
+<h2>Normal Expenses</h2>
+
+<ul>
+
+<% expenses.forEach(exp => { %>
+
+<li>
+
+<%= exp.title %>
+
+₹<%= exp.amount %>
+
+Members: <%= exp.members %>
+
+Each: ₹<%= exp.split %>
+
+<a href="/edit/<%= exp._id %>">Edit</a>
+
+<form action="/delete/<%= exp._id %>" method="POST">
+
+<button>Delete</button>
+
+</form>
+
+</li>
+
+<% }) %>
+
+</ul>
+
+<a href="/add">Add Expense</a>
 </body>
 </html>
